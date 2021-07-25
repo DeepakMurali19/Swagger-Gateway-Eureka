@@ -1,0 +1,31 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: Login
+          uri: lb://Login
+          predicates:
+            - Path=/Login/**
+          filters:
+            - RewritePath=/Login(?<segment>/?.*), $\{segment}
+
+        - id: Dashboard
+          uri: lb://Dashboard
+          predicates:
+            - Path=/Dashboard/**
+          filters:
+            #
+            - RewritePath=/Dashboard(?<segment>/?.*), $\{segment}
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
